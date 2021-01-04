@@ -24,7 +24,23 @@ using namespace std;
  * 3. The function that return the color fo the cell(row, col)
  * 4. The function that print out the current board statement
 *************************************************************************/
-
+struct node{
+    int x,y;
+};
+struct my_stack{
+    node array[1000];
+    int pos = 0;
+    void push(node x){
+        array[pos++] = x;
+    }
+    node pop(){
+        return array[--pos];
+    }
+};
+struct my_array{
+    int array[1000];
+    int pos = 0;
+};
 void algorithm_A(Board board, Player player, int index[]){
 
     //////your algorithm design///////////
