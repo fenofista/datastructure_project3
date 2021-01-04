@@ -41,6 +41,68 @@ struct my_array{
     int array[1000];
     int pos = 0;
 };
+my_array chains(Board board, Player player){
+    my_array lengths;
+    int visit[10][10];
+    for(int i=0;i<7;i++){
+        for(int j=0;j<7;j++){
+            visit[i][j] = 0;
+        }
+    }
+    for(int i=0;i<ROW;i++){
+        for(int j=0;j<COL;j++){
+            if(board.get_orbs_num(i,j)==board.get_capacity(i,j)-1 && board.get_cell_color(i,j)==player.get_color()){
+                int  l = 0;
+                my_stack stack;
+                node p;
+                p.x = i;
+                p.y = j;
+                stack.push(p);
+                for(int k = 0;k<stack.pos;k++){
+                    node pos = stack.pop();
+                    visit[pos.x][pos.y] = 1;
+                    l+=1;
+                    if(pos.x<ROW-1){
+                        if(board.get_orbs_num(pos.x+1,pos.y)==board.get_capacity(pos.x+1,pos.y)-1 && board.get_cell_color(pos.x+1,pos.y)==player.get_color()&&visit[pos.x+1][pos.y]==0){
+                            node p;
+                            p.x = pos.x+1;
+                            p.y = pos.y;
+                            stack.push(p);
+                        }
+                    }
+                    if(pos.y<COL-1){
+                        if(board.get_orbs_num(pos.x,pos.y+1)==board.get_capacity(pos.x,pos.y+1)-1 && board.get_cell_color(pos.x,pos.y+1)==player.get_color()&&visit[pos.x][pos.y+1]==0){
+                            node p;
+                            p.x = pos.x;
+                            p.y = pos.y+1;
+                            stack.push(p);
+                        }
+                    }
+                    if(pos.x>0){
+                        if(board.get_orbs_num(pos.x-1,pos.y)==board.get_capacity(pos.x-1,pos.y)-1 && board.get_cell_color(pos.x-1,pos.y)==player.get_color()&&visit[pos.x-1][pos.y]==0){
+                            node p;
+                            p.x = pos.x-1;
+                            p.y = pos.y;
+                            stack.push(p);
+                        }
+                    }
+                    if(pos.y>0){
+                        if(board.get_orbs_num(pos.x,pos.y-1)==board.get_capacity(pos.x,pos.y-1)-1 && board.get_cell_color(pos.x,pos.y-1)==player.get_color()&&visit[pos.x][pos.y-1]==0){
+                            node p;
+                            p.x = pos.x;
+                            p.y = pos.y-1;
+                            stack.push(p);
+                        }
+                    }
+                    
+                }
+                lengths.array[lengths.pos++] = l;
+            }
+        }
+    }
+    return lengths;
+}
+
 void algorithm_A(Board board, Player player, int index[]){
 
     //////your algorithm design///////////
